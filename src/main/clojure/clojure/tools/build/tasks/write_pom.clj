@@ -39,10 +39,11 @@
 
         (seq exclusions)
         (conj [::pom/exclusions
-               (map (fn [excl]
-                      [::pom/exclusion
-                       [::pom/groupId (or (namespace excl) (name excl))]
-                       [::pom/artifactId (name excl)]])
+               (map (fn [e]
+                      (let [excl (if (not (symbol? e)) (apply symbol e) e)]
+                        [::pom/exclusion
+                        [::pom/groupId (or (namespace excl) (name excl))]
+                        [::pom/artifactId (name excl)]]))
                  exclusions)])
 
         optional
